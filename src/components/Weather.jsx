@@ -7,6 +7,7 @@ import { Card } from "./Card";
 export const Weather = () => {
   const inputRef = useRef();
   const [weatherData, setWeatherData] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const allIcons = {
     "01d": "/images/clear_icon.png",
@@ -32,6 +33,8 @@ export const Weather = () => {
   const search = async (city = null, lat = null, lon = null) => {
     try {
       let url = "";
+      setLoading(true);
+
       if (city) {
         url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${
           import.meta.env.VITE_APP_ID
@@ -60,6 +63,8 @@ export const Weather = () => {
     } catch (e) {
       console.log(e);
       alert(`Error: Please enter valid location`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -108,45 +113,61 @@ export const Weather = () => {
             }}
           />
         </div>
+        {loading ? (
+          <div className="flex justify-center items-center my-10">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-opacity-50"></div>
+            <p className="ml-4 text-blue-600 font-medium">
+              Fetching weather data...
+            </p>
+          </div>
+        ) : weatherData ? (
+          <>
+            <div className="flex flex-col mt-5 justify-center items-center">
+              <h1 className="text-3xl font-semibold mb-5 custom-font">
+                {weatherData.location}
+              </h1>
 
-        <div className="flex flex-col mt-5 justify-center items-center">
-          <h1 className="text-3xl font-semibold mb-5 custom-font">
-            {weatherData.location}
-          </h1>
+              <img
+                src={weatherData.icon}
+                alt={weatherData.description}
+                className="w-20 h-20"
+              />
 
-          <img
-            src={weatherData.icon}
-            alt={weatherData.description}
-            className="w-20 h-20"
-          ></img>
-          {/* icon */}
+              <p className="text-3xl mt-2">{weatherData.temperature} ℃</p>
+            </div>
 
-          <p className="text-3xl mt-2">{weatherData.temperature} ℃</p>
-        </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 mt-3">
+              <Card
+                element="Wind speed"
+                data={weatherData.windspeed}
+                unit="km/h"
+              />
+              <Card element="Rain" data={weatherData.rain} unit="mm" />
+              <Card element="Humidity" data={weatherData.humidity} unit="%" />
+            </div>
 
-        {/* card container for wind, rain, and humidity */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 mt-3">
-          <Card
-            element={"Wind speed"}
-            data={weatherData.windspeed}
-            unit={"km/h"}
-          />
-          <Card element={"Rain"} data={weatherData.rain} unit={"mm"} />
-          <Card element={"Humidity"} data={weatherData.humidity} unit={"%"} />
-        </div>
-        <div className="text-sm text-gray-500 mt-8">
-          <p>
-            Icons by{" "}
-            <a
-              href="https://www.flaticon.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline text-blue-600"
-            >
-              Flaticon
-            </a>
-          </p>
-        </div>
+            <div className="text-sm text-gray-500 mt-8">
+              <p>
+                Icons by{" "}
+                <a
+                  href="https://www.flaticon.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-blue-600"
+                >
+                  Flaticon
+                </a>
+              </p>
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col my-5 justify-center items-center">
+            <p className="text-yellow-700 font-semibold">
+              ⚠️ Please enable location access or{" "}
+              <br className="block sm:hidden" /> enter a location manually{" "}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
