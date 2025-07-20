@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { faCloudSunRain } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "./Card";
 
 export const Weather = () => {
@@ -96,7 +95,7 @@ export const Weather = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="relative w-50 h-30  ">
+      <div className="relative w-50 h-30 ">
         <img
           src={isLeft ? "/images/tail_left.png" : "/images/tail_right.png"}
           alt="cat tail"
@@ -108,7 +107,7 @@ export const Weather = () => {
           className=" absolute top-[2px] left-[20px] z-30 w-50  "
         />
       </div>
-      <div className="flex flex-col items-center justify-center pt-8 px-10 rounded-2xl border border-blue-800">
+      <div className="flex flex-col items-center justify-center pt-8 px-10 rounded-2xl border border-blue-800 bg-slate-100">
         {/* search bar */}
         <div className="flex gap-3 items-center">
           <input
