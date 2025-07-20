@@ -8,6 +8,7 @@ export const Weather = () => {
   const inputRef = useRef();
   const [weatherData, setWeatherData] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isLeft, setIsLeft] = useState(true);
 
   const allIcons = {
     "01d": "/images/clear_icon.png",
@@ -85,8 +86,28 @@ export const Weather = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsLeft((prev) => !prev);
+    }, 800);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <div className="relative w-50 h-30  ">
+        <img
+          src={isLeft ? "/images/tail_left.png" : "/images/tail_right.png"}
+          alt="cat tail"
+          className="absolute  top-1 left-3 transition-all duration-300"
+        />
+        <img
+          src="/images/cat_body.png"
+          alt="cat image"
+          className=" absolute top-[2px] left-[20px] z-30 w-50  "
+        />
+      </div>
       <div className="flex flex-col items-center justify-center pt-8 px-10 rounded-2xl border border-blue-800">
         {/* search bar */}
         <div className="flex gap-3 items-center">
